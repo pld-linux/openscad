@@ -1,18 +1,21 @@
-%bcond_with	tests
+#
+# Conditional build:
+%bcond_with	tests		# build with tests
+
+%define	upversion 2015.03-1
+Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
 Version:	2015.03.1
-%global upversion 2015.03-1
-Summary:	The Programmers Solid 3D CAD Modeller
 Release:	0.1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
 License:	GPLv2 with exceptions and CC0
 Group:		Applications/Engineering
-URL:		http://www.openscad.org/
 Source0:	http://files.openscad.org/%{name}-%{upversion}.src.tar.gz
 # Source0-md5:	c5994220078f5f5c13984da304e4a2fe
 Patch0:		%{name}-polyclipping.patch
+URL:		http://www.openscad.org/
 BuildRequires:	CGAL-devel >= 3.6
 BuildRequires:	ImageMagick
 BuildRequires:	Mesa-dri-driver-swrast
@@ -39,6 +42,71 @@ BuildRequires:	xorg-xserver-Xvfb
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
 Requires:	font(liberationserif)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+### LICENSES:
+
+##  LGPLv2+:
+#   2Dshapes.scad
+#   3d_triangle.scad
+#   fonts.scad
+#   gridbeam.scad
+#   hardware.scad
+#   libtriangles.scad
+#   multiply.scad
+#   shapes.scad
+#   screw.scad
+
+##  LGPLv2:
+#   gears.scad
+#   involute_gears.scad
+#   servos.scad
+#   transformations.scad
+#   triangles.scad
+#   unregular_shapes.scad
+#   bitmap/letter_necklace.scad
+
+##  LGPLv3+:
+#   teardrop.scad
+
+##  GPLv3 or LGPLv2:
+#   motors.scad
+#   nuts_and_bolts.scad
+
+
+##  GPLv3+ or LGPLv2:
+#   metric_fastners.scad
+#   regular_shapes.scad
+
+##  CC-BY-SA or LGPLv2+:
+#   bearing.scad
+#   materials.scad
+#   stepper.scad
+#   utilities.scad
+
+##  CC-BY-SA or LGPLv2:
+#   units.scad
+
+##  CC-BY:
+#   polyholes.scad
+#   bitmap/alphabet_block.scad
+#   bitmap/bitmap.scad
+#   bitmap/height_map.scad
+#   bitmap/name_tag.scad
+
+## BSD
+#   boxes.scad
+
+## MIT
+#   constants.scad
+#   curves.scad
+#   math.scad
+
+## Public Domain
+#   lego_compatibility.scad
+#   trochoids.scad
+
+###############################################
 
 %description
 OpenSCAD is a software for creating solid 3D CAD objects. Unlike most
@@ -49,9 +117,7 @@ looking for when you are planning to create 3D models of machine parts
 but pretty sure is not what you are looking for when you are more
 interested in creating computer-animated movies.
 
-
-###############################################
-%package        MCAD
+%package MCAD
 Summary:	OpenSCAD Parametric CAD Library
 License:	LGPLv2+ and LGPLv2 and LGPLv3+ and (GPLv3 or LGPLv2) and (GPLv3+ or LGPLv2) and (CC-BY-SA or LGPLv2+) and (CC-BY-SA or LGPLv2) and CC-BY and BSD and MIT and Public Domain
 URL:		https://www.github.com/openscad/MCAD
@@ -62,39 +128,6 @@ BuildArch:	noarch
 This library contains components commonly used in designing and
 moching up mechanical designs. It is currently unfinished and you can
 expect some API changes, however many things are already working.
-
-### LICENSES:
-
-## LGPLv2+: # 2Dshapes.scad # 3d_triangle.scad # fonts.scad #
-gridbeam.scad # hardware.scad # libtriangles.scad # multiply.scad #
-shapes.scad # screw.scad
-
-## LGPLv2: # gears.scad # involute_gears.scad # servos.scad #
-transformations.scad # triangles.scad # unregular_shapes.scad #
-bitmap/letter_necklace.scad
-
-## LGPLv3+: # teardrop.scad
-
-## GPLv3 or LGPLv2: # motors.scad # nuts_and_bolts.scad
-
-
-## GPLv3+ or LGPLv2: # metric_fastners.scad # regular_shapes.scad
-
-## CC-BY-SA or LGPLv2+: # bearing.scad # materials.scad # stepper.scad
-# utilities.scad
-
-## CC-BY-SA or LGPLv2: # units.scad
-
-## CC-BY: # polyholes.scad # bitmap/alphabet_block.scad #
-bitmap/bitmap.scad # bitmap/height_map.scad # bitmap/name_tag.scad
-
-## BSD # boxes.scad
-
-## MIT # constants.scad # curves.scad # math.scad
-
-## Public Domain # lego_compatibility.scad # trochoids.scad
-
-###############################################
 
 %prep
 %setup -qn %{name}-%{upversion}
