@@ -122,7 +122,9 @@ Summary:	OpenSCAD Parametric CAD Library
 License:	LGPLv2+ and LGPLv2 and LGPLv3+ and (GPLv3 or LGPLv2) and (GPLv3+ or LGPLv2) and (CC-BY-SA or LGPLv2+) and (CC-BY-SA or LGPLv2) and CC-BY and BSD and MIT and Public Domain
 URL:		https://www.github.com/openscad/MCAD
 Requires:	%{name} = %{version}-%{release}
+%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
+%endif
 
 %description    MCAD
 This library contains components commonly used in designing and
@@ -133,7 +135,8 @@ expect some API changes, however many things are already working.
 %setup -qn %{name}-%{upversion}
 %patch0 -p1
 
-rm -rf src/polyclipping
+# use system package
+rm -r src/polyclipping
 
 %build
 qmake-qt4 \
@@ -144,17 +147,15 @@ qmake-qt4 \
 cd tests
 install -d build
 cd build
-%{__cmake} ..
+%cmake ..
 %{__make}
-cd ../..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} -j1 install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
-rm -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts
 
 :> %{name}.lang
 # TODO: fix this to find the files
@@ -169,6 +170,9 @@ cd tests
 ctest
 cd ..
 %endif
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
@@ -191,8 +195,3 @@ cd ..
 %defattr(644,root,root,755)
 %doc libraries/MCAD/README.markdown libraries/MCAD/TODO
 %{_datadir}/%{name}/libraries/MCAD
-
-%changelog
-
-%clean
-rm -rf $RPM_BUILD_ROOT
