@@ -1,12 +1,15 @@
 #
 # Conditional build:
 %bcond_with	tests		# build with tests
+%bcond_with	qt5
+
+%define	qtver	%{?with_qt5:5}%{!?with_qt5:4}
 
 %define	upversion 2015.03-1
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
 Version:	2015.03.1
-Release:	0.1
+Release:	1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
@@ -36,8 +39,8 @@ BuildRequires:	opencsg-devel >= 1.3.2
 BuildRequires:	polyclipping-devel >= 6.1.3
 BuildRequires:	procps
 BuildRequires:	python
-BuildRequires:	qscintilla2-devel
-BuildRequires:	qt4-build >= 4.4
+BuildRequires:	qscintilla2-qt%{qtver}-devel
+BuildRequires:	qt%{qtver}-build >= 4.4
 BuildRequires:	xorg-xserver-Xvfb
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
@@ -139,7 +142,7 @@ expect some API changes, however many things are already working.
 rm -r src/polyclipping
 
 %build
-qmake-qt4 \
+qmake-qt%{qtver} \
 	PREFIX=%{_prefix}
 %{__make}
 
