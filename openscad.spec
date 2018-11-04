@@ -5,18 +5,18 @@
 
 %define	qtver	%{?with_qt5:5}%{!?with_qt5:4}
 
-%define	upversion 2015.03-1
+%define	upversion 2015.03-3
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
-Version:	2015.03.1
-Release:	8
+Version:	2015.03.3
+Release:	1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
 License:	GPLv2 with exceptions and CC0
 Group:		Applications/Engineering
 Source0:	http://files.openscad.org/%{name}-%{upversion}.src.tar.gz
-# Source0-md5:	c5994220078f5f5c13984da304e4a2fe
+# Source0-md5:	a498a218a247468eee140ccc44c73afa
 Patch0:		%{name}-polyclipping.patch
 URL:		http://www.openscad.org/
 BuildRequires:	CGAL-devel >= 3.6
