@@ -6,8 +6,8 @@ index a2eefe6..20b1864 100644
             src/LibraryInfoDialog.cc
  
  # ClipperLib
--SOURCES += src/polyclipping/clipper.cpp
--HEADERS += src/polyclipping/clipper.hpp
+-SOURCES += src/ext/polyclipping/clipper.cpp
+-HEADERS += src/ext/polyclipping/clipper.hpp
 +LIBS += -lpolyclipping
  
  # libtess2
@@ -19,37 +19,19 @@ index 0dc7cd0..c98cda0 100644
 @@ -1,6 +1,6 @@
  #pragma once
  
--#include "polyclipping/clipper.hpp"
+-#include "ext/polyclipping/clipper.hpp"
 +#include <polyclipping/clipper.hpp>
  #include "Polygon2d.h"
  
  namespace ClipperUtils {
-diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
-index 93658a0..a852ef6 100644
---- a/tests/CMakeLists.txt
-+++ b/tests/CMakeLists.txt
-@@ -705,7 +705,6 @@ set(COMMON_SOURCES
-   ../src/GeometryCache.cc 
-   ../src/clipper-utils.cc 
-   ../src/Tree.cc
--  ../src/polyclipping/clipper.cpp
-   ../src/libtess2/Source/bucketalloc.c
-   ../src/libtess2/Source/dict.c
-   ../src/libtess2/Source/geom.c
-@@ -786,14 +785,14 @@ target_link_libraries(csgtexttest tests-nocgal ${GLEW_LIBRARY} ${OPENCSG_LIBRARY
- #
- add_executable(cgalcachetest cgalcachetest.cc)
- set_target_properties(cgalcachetest PROPERTIES COMPILE_FLAGS "-DENABLE_CGAL ${CGAL_CXX_FLAGS_INIT}")
--target_link_libraries(cgalcachetest tests-cgal ${GLEW_LIBRARY} ${OPENCSG_LIBRARY} ${APP_SERVICES_LIBRARY})
-+target_link_libraries(cgalcachetest tests-cgal -lpolyclipping ${GLEW_LIBRARY} ${OPENCSG_LIBRARY} ${APP_SERVICES_LIBRARY})
+--- openscad-openscad-2019.01-RC4/src/libsvg/shape.h~	2019-03-17 02:57:25.000000000 +0100
++++ openscad-openscad-2019.01-RC4/src/libsvg/shape.h	2019-04-19 14:37:29.511178262 +0200
+@@ -34,7 +34,7 @@
+ #include <Eigen/Geometry>
  
- #
- # openscad no-qt
- #
- add_executable(openscad_nogui ../src/openscad.cc)
- set_target_properties(openscad_nogui PROPERTIES COMPILE_FLAGS "-fno-strict-aliasing -DEIGEN_DONT_ALIGN ${ENABLE_OPENCSG_FLAG} -DENABLE_CGAL ${CGAL_CXX_FLAGS_INIT}")
--target_link_libraries(openscad_nogui tests-offscreen tests-cgal ${GLEW_LIBRARY} ${OPENCSG_LIBRARY} ${APP_SERVICES_LIBRARY})
-+target_link_libraries(openscad_nogui tests-offscreen tests-cgal -lX11 -lpolyclipping ${GLEW_LIBRARY} ${OPENCSG_LIBRARY} ${APP_SERVICES_LIBRARY})
+ #include "util.h"
+-#include "ext/polyclipping/clipper.hpp"
++#include <polyclipping/clipper.hpp>
  
- # also run translation compilation to verify the files are without syntax errors
- add_custom_target(locale_files ALL COMMAND ${CMAKE_SOURCE_DIR}/../scripts/translation-make.sh)
+ namespace libsvg {
+ 

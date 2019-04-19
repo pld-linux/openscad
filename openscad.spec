@@ -1,24 +1,37 @@
 #
 # Conditional build:
-%bcond_with	tests		# build with tests
+%bcond_without	tests		# build with tests
 %bcond_with	qt5
 
 %define	qtver	%{?with_qt5:5}%{!?with_qt5:4}
 
-%define	upversion 2015.03-3
+%define	_rc	RC2
+%define	upversion %{version}-%{_rc}
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
-Version:	2015.03.3
-Release:	2
+Version:	2019.01
+Release:	0.%{_rc}.1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
 License:	GPLv2 with exceptions and CC0
 Group:		Applications/Engineering
 Source0:	http://files.openscad.org/%{name}-%{upversion}.src.tar.gz
-# Source0-md5:	a498a218a247468eee140ccc44c73afa
+# Source0-md5:	a850bd071b8dd47cfcb833a6bd3044c4
 Patch0:		%{name}-polyclipping.patch
+Patch1:		localedir.patch
 URL:		http://www.openscad.org/
+%if %{with qt5}
+BuildRequires:	Qt5Network-devel
+BuildRequires:	Qt5Concurrent-devel
+BuildRequires:	Qt5Multimedia-devel
+BuildRequires:	Qt5DBus-devel
+BuildRequires:	Qt5PrintSupport-devel
+%else
+BuildRequires:	QtNetwork-devel
+BuildRequires:	QtMultimedia-devel
+BuildRequires:	QtDBus-devel
+%endif
 BuildRequires:	CGAL-devel >= 3.6
 BuildRequires:	ImageMagick
 BuildRequires:	Mesa-dri-driver-swrast
@@ -137,60 +150,54 @@ expect some API changes, however many things are already working.
 %prep
 %setup -qn %{name}-%{upversion}
 %patch0 -p1
+%patch1 -p1
 
 # use system package
-rm -r src/polyclipping
+rm -r src/ext/polyclipping
 
 %build
 qmake-qt%{qtver} \
 	PREFIX=%{_prefix}
 %{__make}
 
-# tests
+%if %{with tests}
 cd tests
 install -d build
 cd build
 %cmake ..
 %{__make}
+cd ..
+ctest
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} -j1 install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
-rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/lgpl-2.1.txt
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/README.markdown
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/TODO
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts
 
-:> %{name}.lang
-# TODO: fix this to find the files
-#%find_lang %{name}
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/{%{name},}/locale
 
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/lgpl-2.1.txt
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/README.markdown
-rm $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/TODO
-
-%if %{with tests}
-cd tests
-ctest
-cd ..
-%endif
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc README.md RELEASE_NOTES
+%doc README.md RELEASE_NOTES.md
 %attr(755,root,root) %{_bindir}/%{name}
-%{_datadir}/appdata/*.xml
+%{_datadir}/metainfo/*.xml
 %{_desktopdir}/%{name}.desktop
 %{_pixmapsdir}/%{name}.png
 %{_datadir}/mime/packages/%{name}.xml
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/examples
 %{_datadir}/%{name}/color-schemes
-%dir %{_datadir}/%{name}/locale
-# drop when find_lang is fixed
-%{_datadir}/%{name}/locale/*
 %dir %{_datadir}/%{name}/libraries
 %{_mandir}/man1/*
 
