@@ -5,19 +5,17 @@
 
 %define	qtver	%{?with_qt5:5}%{!?with_qt5:4}
 
-%define	_rc	RC2
-%define	upversion %{version}-%{_rc}
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
-Version:	2019.01
-Release:	0.%{_rc}.1
+Version:	2019.05
+Release:	0.1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
 License:	GPLv2 with exceptions and CC0
 Group:		Applications/Engineering
-Source0:	http://files.openscad.org/%{name}-%{upversion}.src.tar.gz
-# Source0-md5:	a850bd071b8dd47cfcb833a6bd3044c4
+Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
+# Source0-md5:	2b63e249d56e2eba62ed5b042e1d82bc
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
 URL:		http://www.openscad.org/
@@ -148,7 +146,7 @@ moching up mechanical designs. It is currently unfinished and you can
 expect some API changes, however many things are already working.
 
 %prep
-%setup -qn %{name}-%{upversion}
+%setup -q
 %patch0 -p1
 %patch1 -p1
 
