@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	tests		# build with tests
-%bcond_with	qt5
+%bcond_without	qt5
 
 %define	qtver	%{?with_qt5:5}%{!?with_qt5:4}
 
