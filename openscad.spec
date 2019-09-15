@@ -1,14 +1,11 @@
 #
 # Conditional build:
 %bcond_without	tests		# build with tests
-%bcond_without	qt5
-
-%define	qtver	%{?with_qt5:5}%{!?with_qt5:4}
 
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
 Version:	2019.05
-Release:	0.1
+Release:	0.3
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
@@ -19,17 +16,11 @@ Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
 URL:		http://www.openscad.org/
-%if %{with qt5}
 BuildRequires:	Qt5Network-devel
 BuildRequires:	Qt5Concurrent-devel
 BuildRequires:	Qt5Multimedia-devel
 BuildRequires:	Qt5DBus-devel
 BuildRequires:	Qt5PrintSupport-devel
-%else
-BuildRequires:	QtNetwork-devel
-BuildRequires:	QtMultimedia-devel
-BuildRequires:	QtDBus-devel
-%endif
 BuildRequires:	CGAL-devel >= 3.6
 BuildRequires:	ImageMagick
 BuildRequires:	Mesa-dri-driver-swrast
@@ -45,13 +36,17 @@ BuildRequires:	glew-devel >= 1.6
 BuildRequires:	glib2-devel
 BuildRequires:	gmp-devel >= 5.0.0
 BuildRequires:	harfbuzz-devel >= 0.9.19
+BuildRequires:	lib3mf-devel >= 1.8.1
+BuildRequires:	libzip-devel
+BuildRequires:	libxml2-devel
 BuildRequires:	mpfr-devel >= 3.0.0
 BuildRequires:	opencsg-devel >= 1.3.2
+BuildRequires:	pkgconfig
 BuildRequires:	polyclipping-devel >= 6.1.3
 BuildRequires:	procps
 BuildRequires:	python
-BuildRequires:	qscintilla2-qt%{qtver}-devel
-BuildRequires:	qt%{qtver}-build >= 4.4
+BuildRequires:	qscintilla2-qt5-devel
+BuildRequires:	qt5-build
 BuildRequires:	xorg-xserver-Xvfb
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
@@ -151,26 +146,24 @@ expect some API changes, however many things are already working.
 %patch1 -p1
 
 # use system package
-rm -r src/ext/polyclipping
+%{__rm} -r src/ext/polyclipping
 
 %build
-qmake-qt%{qtver} \
+qmake-qt5 \
 	PREFIX=%{_prefix}
 %{__make}
 
 %if %{with tests}
-cd tests
-install -d build
-cd build
-%cmake ..
+mkdir -p tests/build
+cd tests/build
+%cmake ../
 %{__make}
-cd ..
-ctest
+%{__make} -j1 test
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} -j1 install \
+%{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/lgpl-2.1.txt
