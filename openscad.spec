@@ -2,6 +2,9 @@
 # Conditional build:
 %bcond_without	tests		# build with tests
 
+%ifnarch %{x8664}
+%undefine	with_tests
+%endif
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
 Version:	2019.05
