@@ -45,7 +45,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	polyclipping-devel >= 6.1.3
 BuildRequires:	procps
 BuildRequires:	python
-BuildRequires:	qscintilla2-qt5-devel
+BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
 BuildRequires:	qt5-build
 BuildRequires:	xorg-xserver-Xvfb
 Requires:	font(liberationmono)
