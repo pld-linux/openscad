@@ -27,6 +27,7 @@ BuildRequires:	Mesa-dri-driver-swrast
 BuildRequires:	bison >= 2.4
 BuildRequires:	boost-devel >= 1.35
 BuildRequires:	desktop-file-utils
+BuildRequires:	double-conversion-devel
 BuildRequires:	eigen3
 BuildRequires:	flex >= 2.5.35
 BuildRequires:	fontconfig-devel >= 2.10
