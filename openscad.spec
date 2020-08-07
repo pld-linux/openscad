@@ -8,7 +8,7 @@
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
 Version:	2019.05
-Release:	4
+Release:	5
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
@@ -18,6 +18,8 @@ Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
 # Source0-md5:	2b63e249d56e2eba62ed5b042e1d82bc
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
+Patch2:		boost-1.73.patch
+Patch3:		gcc10.patch
 URL:		http://www.openscad.org/
 BuildRequires:	Qt5Network-devel
 BuildRequires:	Qt5Concurrent-devel
@@ -148,6 +150,8 @@ expect some API changes, however many things are already working.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 # use system package
 %{__rm} -r src/ext/polyclipping
