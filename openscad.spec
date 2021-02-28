@@ -137,9 +137,7 @@ Summary:	OpenSCAD Parametric CAD Library
 License:	LGPLv2+ and LGPLv2 and LGPLv3+ and (GPLv3 or LGPLv2) and (GPLv3+ or LGPLv2) and (CC-BY-SA or LGPLv2+) and (CC-BY-SA or LGPLv2) and CC-BY and BSD and MIT and Public Domain
 URL:		https://www.github.com/openscad/MCAD
 Requires:	%{name} = %{version}-%{release}
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description    MCAD
 This library contains components commonly used in designing and
