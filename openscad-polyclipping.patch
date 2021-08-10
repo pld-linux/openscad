@@ -3,15 +3,15 @@ index a2eefe6..20b1864 100644
 --- a/openscad.pro
 +++ b/openscad.pro
 @@ -440,8 +440,7 @@ SOURCES += src/version_check.cc \
-            src/LibraryInfoDialog.cc
- 
+ HEADERS += src/ext/lodepng/lodepng.h
+            
  # ClipperLib
 -SOURCES += src/ext/polyclipping/clipper.cpp
 -HEADERS += src/ext/polyclipping/clipper.hpp
 +LIBS += -lpolyclipping
  
  # libtess2
- INCLUDEPATH += src/libtess2/Include
+ INCLUDEPATH += src/ext/libtess2/Include
 diff --git a/src/clipper-utils.h b/src/clipper-utils.h
 index 0dc7cd0..c98cda0 100644
 --- a/src/clipper-utils.h
