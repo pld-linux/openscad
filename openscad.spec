@@ -19,14 +19,14 @@ Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
 URL:		http://www.openscad.org/
-BuildRequires:	Qt5Network-devel
-BuildRequires:	Qt5Concurrent-devel
-BuildRequires:	Qt5Multimedia-devel
-BuildRequires:	Qt5DBus-devel
-BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	CGAL-devel >= 4.9
 BuildRequires:	ImageMagick
 BuildRequires:	Mesa-dri-driver-swrast
+BuildRequires:	Qt5Concurrent-devel
+BuildRequires:	Qt5DBus-devel
+BuildRequires:	Qt5Multimedia-devel
+BuildRequires:	Qt5Network-devel
+BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	bison >= 2.4
 BuildRequires:	boost-devel >= 1.35
 BuildRequires:	desktop-file-utils
@@ -41,8 +41,8 @@ BuildRequires:	glib2-devel
 BuildRequires:	gmp-devel >= 5.0.0
 BuildRequires:	harfbuzz-devel >= 0.9.19
 BuildRequires:	lib3mf-devel >= 1.8.1
-BuildRequires:	libzip-devel
 BuildRequires:	libxml2-devel
+BuildRequires:	libzip-devel
 BuildRequires:	mpfr-devel >= 3.0.0
 BuildRequires:	opencsg-devel >= 1.3.2
 BuildRequires:	pkgconfig
@@ -186,12 +186,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/%{name}
 %{_datadir}/metainfo/*.xml
 %{_desktopdir}/%{name}.desktop
-%{_pixmapsdir}/%{name}.png
+%{_iconsdir}/hicolor/*x*/apps/openscad.png
 %{_datadir}/mime/packages/%{name}.xml
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/examples
 %{_datadir}/%{name}/color-schemes
 %dir %{_datadir}/%{name}/libraries
+%{_datadir}/%{name}/templates
 %{_mandir}/man1/*
 
 %files MCAD
