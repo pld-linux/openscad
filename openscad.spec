@@ -7,26 +7,24 @@
 %endif
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
-Version:	2019.05
-Release:	7
+Version:	2021.01
+Release:	1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
 License:	GPLv2 with exceptions and CC0
 Group:		Applications/Engineering
 Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
-# Source0-md5:	2b63e249d56e2eba62ed5b042e1d82bc
+# Source0-md5:	79f8e3a42bcfeeb3ddde9e5bc2311f76
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
-Patch2:		boost-1.73.patch
-Patch3:		gcc10.patch
 URL:		http://www.openscad.org/
 BuildRequires:	Qt5Network-devel
 BuildRequires:	Qt5Concurrent-devel
 BuildRequires:	Qt5Multimedia-devel
 BuildRequires:	Qt5DBus-devel
 BuildRequires:	Qt5PrintSupport-devel
-BuildRequires:	CGAL-devel >= 3.6
+BuildRequires:	CGAL-devel >= 4.9
 BuildRequires:	ImageMagick
 BuildRequires:	Mesa-dri-driver-swrast
 BuildRequires:	bison >= 2.4
@@ -148,8 +146,6 @@ expect some API changes, however many things are already working.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 # use system package
 %{__rm} -r src/ext/polyclipping
