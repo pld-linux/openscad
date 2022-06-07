@@ -156,9 +156,8 @@ qmake-qt5 \
 %{__make}
 
 %if %{with tests}
-mkdir -p tests/build
-cd tests/build
-%cmake ../
+cd tests
+%cmake .
 %{__make}
 %{__make} -j1 test
 %endif
