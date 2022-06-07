@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without	tests		# build with tests
 
-%ifnarch %{x8664}
+%ifarch x32
 %undefine	with_tests
 %endif
 Summary:	The Programmers Solid 3D CAD Modeller
@@ -151,15 +151,14 @@ expect some API changes, however many things are already working.
 %{__rm} -r src/ext/polyclipping
 
 %build
-mkdir -p build
-cd build
-%cmake ../ \
-	-DEXPERIMENTAL=ON
+qmake-qt5 \
+	PREFIX=%{_prefix} \
+	CONFIG+=experimental
 %{__make}
 
 %if %{with tests}
 export OPENSCAD_BINARY=$(pwd)/openscad
-cd ../tests
+cd tests
 %cmake .
 %{__make}
 %{__make} -j1 test
