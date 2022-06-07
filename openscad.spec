@@ -151,12 +151,15 @@ expect some API changes, however many things are already working.
 %{__rm} -r src/ext/polyclipping
 
 %build
-qmake-qt5 \
-	PREFIX=%{_prefix}
+mkdir -p build
+cd build
+%cmake ../ \
+	-DEXPERIMENTAL=ON
 %{__make}
 
 %if %{with tests}
-cd tests
+export OPENSCAD_BINARY=$(pwd)/openscad
+cd ../tests
 %cmake .
 %{__make}
 %{__make} -j1 test

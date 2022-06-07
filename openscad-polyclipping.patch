@@ -35,3 +35,23 @@ index 0dc7cd0..c98cda0 100644
  
  namespace libsvg {
  
+--- openscad-2021.01/CMakeLists.txt.orig	2021-01-31 21:17:41.000000000 +0100
++++ openscad-2021.01/CMakeLists.txt	2022-06-07 21:45:07.303640010 +0200
+@@ -403,6 +403,9 @@
+   endif()
+ endif()
+ 
++pkg_check_modules(polyclipping REQUIRED polyclipping)
++list(APPEND COMMON_LIBRARIES ${polyclipping_LIBRARIES})
++
+ include_directories("src/ext/libtess2/Include")
+ 
+ # NOTE: To keep HEADLESS builds working, do NOT add Qt-dependent sources here,
+@@ -495,7 +497,6 @@
+   src/UserModule.cc
+   src/Tree.cc
+   src/ext/lodepng/lodepng.cpp
+-  src/ext/polyclipping/clipper.cpp
+   src/ext/libtess2/Source/bucketalloc.c
+   src/ext/libtess2/Source/dict.c
+   src/ext/libtess2/Source/geom.c
