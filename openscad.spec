@@ -54,7 +54,7 @@ BuildRequires:	python
 BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
 BuildRequires:	qt5-build
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 1.605
+BuildRequires:	rpmbuild(macros) >= 2.016
 BuildRequires:	xorg-xserver-Xvfb
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
@@ -156,7 +156,7 @@ expect some API changes, however many things are already working.
 %{__rm} -r src/ext/polyclipping
 
 %build
-qmake-qt5 \
+%{qmake_qt5} \
 	PREFIX=%{_prefix} \
 	CONFIG+=experimental
 %{__make}
