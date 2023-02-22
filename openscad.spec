@@ -8,7 +8,7 @@
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
 Version:	2021.01
-Release:	1
+Release:	2
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
