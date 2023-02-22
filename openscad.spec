@@ -52,6 +52,7 @@ BuildRequires:	procps
 BuildRequires:	python
 BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
 BuildRequires:	qt5-build
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	xorg-xserver-Xvfb
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
