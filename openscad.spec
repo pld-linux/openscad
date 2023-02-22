@@ -30,6 +30,7 @@ BuildRequires:	Qt5Network-devel
 BuildRequires:	Qt5PrintSupport-devel
 BuildRequires:	bison >= 2.4
 BuildRequires:	boost-devel >= 1.35
+BuildRequires:	cmake >= 3.3
 BuildRequires:	desktop-file-utils
 BuildRequires:	double-conversion-devel
 BuildRequires:	eigen3
