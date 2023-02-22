@@ -18,6 +18,7 @@ Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
 # Source0-md5:	79f8e3a42bcfeeb3ddde9e5bc2311f76
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
+Patch2:		tests.patch
 URL:		http://www.openscad.org/
 BuildRequires:	CGAL-devel >= 4.9
 BuildRequires:	ImageMagick
@@ -146,6 +147,7 @@ expect some API changes, however many things are already working.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # use system package
 %{__rm} -r src/ext/polyclipping

@@ -1,0 +1,23 @@
+From 9c3406c34fe79419b74867e33b47db00b3a348af Mon Sep 17 00:00:00 2001
+From: Torsten Paul <Torsten.Paul@gmx.de>
+Date: Thu, 14 Apr 2022 16:07:04 +0200
+Subject: [PATCH] Remove double quoting of the output file parameter for
+ ghostscript.
+
+---
+ tests/export_pngtest.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/export_pngtest.py b/tests/export_pngtest.py
+index 2293148e75..94c81960e1 100644
+--- a/tests/export_pngtest.py
++++ b/tests/export_pngtest.py
+@@ -82,7 +82,7 @@ def createImport(inputfile, scadfile):
+ if result != 0:
+     failquit('OpenSCAD failed with return code ' + str(result))
+ 
+-convert_cmd = gs_cmd + ["-sOutputFile=\"" + pngfile + "\"", exportfile]
++convert_cmd = gs_cmd + ["-sOutputFile=" + pngfile, exportfile]
+ print('Running Converter:', ' '.join(convert_cmd), file=sys.stderr)
+ result = subprocess.call(convert_cmd)
+ if result != 0:
