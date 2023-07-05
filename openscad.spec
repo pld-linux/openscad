@@ -21,7 +21,8 @@ Patch1:		localedir.patch
 Patch2:		tests.patch
 URL:		http://www.openscad.org/
 BuildRequires:	CGAL-devel >= 4.9
-BuildRequires:	ImageMagick
+%{?with_tests:BuildRequires:	ImageMagick}
+%{?with_tests:BuildRequires:	ImageMagick-coder-png}
 BuildRequires:	Mesa-dri-driver-swrast
 BuildRequires:	Qt5Concurrent-devel
 BuildRequires:	Qt5DBus-devel
