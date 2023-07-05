@@ -23,7 +23,7 @@ URL:		http://www.openscad.org/
 BuildRequires:	CGAL-devel >= 4.9
 %{?with_tests:BuildRequires:	ImageMagick}
 %{?with_tests:BuildRequires:	ImageMagick-coder-png}
-BuildRequires:	Mesa-dri-driver-swrast
+%{?with_tests:BuildRequires:	Mesa-dri-driver-swrast}
 BuildRequires:	Qt5Concurrent-devel
 BuildRequires:	Qt5DBus-devel
 BuildRequires:	Qt5Multimedia-devel
@@ -56,7 +56,7 @@ BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
 BuildRequires:	qt5-build
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.016
-BuildRequires:	xorg-xserver-Xvfb
+%{?with_tests:BuildRequires:	xorg-xserver-Xvfb}
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
 Requires:	font(liberationserif)
