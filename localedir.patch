@@ -4,18 +4,18 @@
   * files.
   */
  void localization_init() {
--	fs::path po_dir(PlatformUtils::resourcePath("locale"));
--	std::string locale_path(po_dir.string());
+-  fs::path po_dir(PlatformUtils::resourcePath("locale"));
+-  const std::string& locale_path(po_dir.string());
 -
--	if (fs::is_directory(locale_path)) {
- 		setlocale(LC_ALL, "");
--		bindtextdomain("openscad", locale_path.c_str());
-+		bindtextdomain("openscad", "/usr/share/locale");
- 		bind_textdomain_codeset("openscad", "UTF-8");
- 		textdomain("openscad");
--	} else {
--		LOG(message_group::None,Location::NONE,"","Could not initialize localization.");
--	}
+-  if (fs::is_directory(locale_path)) {
+     setlocale(LC_ALL, "");
+-    bindtextdomain("openscad", locale_path.c_str());
++    bindtextdomain("openscad", "/usr/share/locale");
+     bind_textdomain_codeset("openscad", "UTF-8");
+     textdomain("openscad");
+-  } else {
+-    LOG("Could not initialize localization (application path is '%1$s').", PlatformUtils::applicationPath());
+-  }
  }
  
- Camera get_camera(const po::variables_map &vm)
+ Camera get_camera(const po::variables_map& vm)

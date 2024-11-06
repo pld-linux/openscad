@@ -1,21 +1,23 @@
 #
 # Conditional build:
-%bcond_without	tests		# build with tests
+%bcond_with	tests		# build with tests (need external MCAD)
 
 %ifarch x32
 %undefine	with_tests
 %endif
 Summary:	The Programmers Solid 3D CAD Modeller
 Name:		openscad
-Version:	2021.01
-Release:	3
+%define	hash	fd3a9aa
+Version:	2024.11.03
+Release:	1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
 License:	GPLv2 with exceptions and CC0
 Group:		Applications/Engineering
-Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
-# Source0-md5:	79f8e3a42bcfeeb3ddde9e5bc2311f76
+#Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
+Source0:	https://github.com/openscad/openscad/archive/%{hash}/%{name}-%{version}.tar.gz
+# Source0-md5:	0eebc48f5fc493d3f57896dec43e5ba1
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
 Patch2:		tests.patch
@@ -46,17 +48,22 @@ BuildRequires:	harfbuzz-devel >= 0.9.19
 BuildRequires:	lib3mf-devel >= 1.8.1
 BuildRequires:	libxml2-devel
 BuildRequires:	libzip-devel
+BuildRequires:	manifold-devel
+BuildRequires:	mimalloc-devel
 BuildRequires:	mpfr-devel >= 3.0.0
 BuildRequires:	opencsg-devel >= 1.3.2
 BuildRequires:	pkgconfig
 BuildRequires:	polyclipping-devel >= 6.1.3
 BuildRequires:	procps
-BuildRequires:	python
+BuildRequires:	python3
 BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
 BuildRequires:	qt5-build
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.016
+BuildRequires:	tbb-devel
 %{?with_tests:BuildRequires:	xorg-xserver-Xvfb}
+# Library may have new symbols without soname change
+%requires_eq	tbb
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
 Requires:	font(liberationserif)
@@ -148,18 +155,20 @@ moching up mechanical designs. It is currently unfinished and you can
 expect some API changes, however many things are already working.
 
 %prep
-%setup -q
+%setup -q -n openscad-fd3a9aad2bcd913ac1830e11670f0a422231e43f
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 # use system package
 %{__rm} -r src/ext/polyclipping
 
 %build
-%{qmake_qt5} \
-	PREFIX=%{_prefix} \
-	CONFIG+=experimental
+mkdir -p build
+cd build
+%cmake ../ \
+	-DUSE_BUILTIN_MANIFOLD=OFF \
+	%{cmake_on_off tests ENABLE_TESTS}
+
 %{__make}
 
 %if %{with tests}
@@ -172,12 +181,9 @@ cd tests
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install \
-	INSTALL_ROOT=$RPM_BUILD_ROOT
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/lgpl-2.1.txt
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/README.markdown
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/TODO
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts
 
 %{__mv} $RPM_BUILD_ROOT%{_datadir}/{%{name},}/locale
@@ -199,10 +205,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/examples
 %{_datadir}/%{name}/color-schemes
 %dir %{_datadir}/%{name}/libraries
+%{_datadir}/%{name}/shaders
 %{_datadir}/%{name}/templates
 %{_mandir}/man1/*
-
-%files MCAD
-%defattr(644,root,root,755)
-%doc libraries/MCAD/README.markdown libraries/MCAD/TODO
-%{_datadir}/%{name}/libraries/MCAD
