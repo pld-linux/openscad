@@ -60,6 +60,7 @@ BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
 BuildRequires:	qt5-build
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.016
+BuildRequires:	sanitizers-cmake
 BuildRequires:	tbb-devel
 %{?with_tests:BuildRequires:	xorg-xserver-Xvfb}
 # Library may have new symbols without soname change
