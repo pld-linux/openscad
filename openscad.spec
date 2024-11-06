@@ -22,7 +22,7 @@ Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
 Patch2:		tests.patch
 URL:		http://www.openscad.org/
-BuildRequires:	CGAL-devel >= 4.9
+BuildRequires:	CGAL-devel >= 5.0
 %{?with_tests:BuildRequires:	ImageMagick}
 %{?with_tests:BuildRequires:	ImageMagick-coder-png}
 %{?with_tests:BuildRequires:	Mesa-dri-driver-swrast}
