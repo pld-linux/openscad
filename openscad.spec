@@ -14,7 +14,7 @@ Release:	1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
-License:	GPLv2 with exceptions and CC0
+License:	GPL v2 with exceptions, CC0
 Group:		Applications/Engineering
 #Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
 Source0:	https://github.com/openscad/openscad/archive/%{hash}/%{name}-%{version}.tar.gz
@@ -22,7 +22,7 @@ Source0:	https://github.com/openscad/openscad/archive/%{hash}/%{name}-%{version}
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
 Patch2:		tests.patch
-URL:		http://www.openscad.org/
+URL:		https://openscad.org/
 BuildRequires:	CGAL-devel >= 5.0
 %{?with_tests:BuildRequires:	ImageMagick}
 %{?with_tests:BuildRequires:	ImageMagick-coder-png}
@@ -156,7 +156,7 @@ animowanych.
 %package MCAD
 Summary:	OpenSCAD Parametric CAD Library
 Summary(pl.UTF-8):	Biblioteka parametryczna CAD dla programu OpenSCAD
-License:	LGPLv2+ and LGPLv2 and LGPLv3+ and (GPLv3 or LGPLv2) and (GPLv3+ or LGPLv2) and (CC-BY-SA or LGPLv2+) and (CC-BY-SA or LGPLv2) and CC-BY and BSD and MIT and Public Domain
+License:	LGPL v2/v2+/v3+, GPL v3/v3+, CC-BY-SA, CC-BY, BSD, MIT, Public Domain
 URL:		https://www.github.com/openscad/MCAD
 Requires:	%{name} = %{version}-%{release}
 BuildArch:	noarch
@@ -182,7 +182,7 @@ zmian API, ale wiele rzeczy już działa.
 %build
 mkdir -p build
 cd build
-%cmake ../ \
+%cmake .. \
 	-DUSE_BUILTIN_MANIFOLD=OFF \
 	%{cmake_on_off tests ENABLE_TESTS}
 
@@ -193,11 +193,13 @@ export OPENSCAD_BINARY=$(pwd)/openscad
 cd tests
 %cmake .
 %{__make}
+
 %{__make} -j1 test
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -213,15 +215,15 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README.md RELEASE_NOTES.md
-%attr(755,root,root) %{_bindir}/%{name}
-%{_datadir}/metainfo/*.xml
-%{_desktopdir}/%{name}.desktop
-%{_iconsdir}/hicolor/*x*/apps/openscad.png
-%{_datadir}/mime/packages/%{name}.xml
+%attr(755,root,root) %{_bindir}/openscad
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/examples
 %{_datadir}/%{name}/color-schemes
 %dir %{_datadir}/%{name}/libraries
 %{_datadir}/%{name}/shaders
 %{_datadir}/%{name}/templates
-%{_mandir}/man1/*
+%{_datadir}/metainfo/org.openscad.OpenSCAD.appdata.xml
+%{_datadir}/mime/packages/openscad.xml
+%{_desktopdir}/openscad.desktop
+%{_iconsdir}/hicolor/*x*/apps/openscad.png
+%{_mandir}/man1/openscad.1*
