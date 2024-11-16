@@ -1,11 +1,12 @@
 #
 # Conditional build:
-%bcond_with	tests		# build with tests (need external MCAD)
+%bcond_with	tests		# test suite (needs external MCAD)
 
 %ifarch x32
 %undefine	with_tests
 %endif
 Summary:	The Programmers Solid 3D CAD Modeller
+Summary(pl.UTF-8):	Program CAD do modelowania brył 3D
 Name:		openscad
 %define	hash	fd3a9aa
 Version:	2024.11.03
@@ -143,17 +144,32 @@ looking for when you are planning to create 3D models of machine parts
 but pretty sure is not what you are looking for when you are more
 interested in creating computer-animated movies.
 
+%description -l pl.UTF-8
+OpenSCAD to oprogramowanie do tworzenia obiektów CAD w postaci brył
+trójwymiarowych. W przeciwieństwie do większości wolnodostępnych
+programów do tworzenia modeli 3D (takich, jak słynny Blender), nie
+skupia się na aspektach artystycznych modelowania 3D, ale na aspektach
+CAD (projektowania wspomaganego komputerowo). Może więc przydzać się
+do tworzenia modeli 3D części maszyn, ale nie do tworzenia filmów
+animowanych.
+
 %package MCAD
 Summary:	OpenSCAD Parametric CAD Library
+Summary(pl.UTF-8):	Biblioteka parametryczna CAD dla programu OpenSCAD
 License:	LGPLv2+ and LGPLv2 and LGPLv3+ and (GPLv3 or LGPLv2) and (GPLv3+ or LGPLv2) and (CC-BY-SA or LGPLv2+) and (CC-BY-SA or LGPLv2) and CC-BY and BSD and MIT and Public Domain
 URL:		https://www.github.com/openscad/MCAD
 Requires:	%{name} = %{version}-%{release}
 BuildArch:	noarch
 
-%description    MCAD
+%description MCAD
 This library contains components commonly used in designing and
 moching up mechanical designs. It is currently unfinished and you can
 expect some API changes, however many things are already working.
+
+%description MCAD -l pl.UTF-8
+Ta biblioteka zawiera komponenty często używane przy projektach
+mechanicznych. Obecnie nie jest skończona i można spodziewać się
+zmian API, ale wiele rzeczy już działa.
 
 %prep
 %setup -q -n openscad-fd3a9aad2bcd913ac1830e11670f0a422231e43f
