@@ -1,3 +1,4 @@
+# TODO: ENABLE_PYTHON, BR: python3-devel, cryptopp-devel
 #
 # Conditional build:
 %bcond_with	tests		# test suite (needs external MCAD)
@@ -24,30 +25,44 @@ Patch1:		localedir.patch
 Patch2:		tests.patch
 URL:		https://openscad.org/
 BuildRequires:	CGAL-devel >= 5.0
+BuildRequires:	EGL-devel
 %{?with_tests:BuildRequires:	ImageMagick}
 %{?with_tests:BuildRequires:	ImageMagick-coder-png}
 %{?with_tests:BuildRequires:	Mesa-dri-driver-swrast}
-BuildRequires:	Qt5Concurrent-devel
-BuildRequires:	Qt5DBus-devel
-BuildRequires:	Qt5Multimedia-devel
-BuildRequires:	Qt5Network-devel
-BuildRequires:	Qt5PrintSupport-devel
+BuildRequires:	OpenGL-GLX-devel
+BuildRequires:	OpenGL-devel
+BuildRequires:	Qt5Concurrent-devel >= 5.12
+BuildRequires:	Qt5Core-devel >= 5.12
+BuildRequires:	Qt5DBus-devel >= 5
+BuildRequires:	Qt5Gamepad-devel >= 5
+BuildRequires:	Qt5Multimedia-devel >= 5.12
+BuildRequires:	Qt5Network-devel >= 5.12
+BuildRequires:	Qt5OpenGL-devel >= 5.12
+BuildRequires:	Qt5Svg-devel >= 5.12
+BuildRequires:	Qt5Widgets-devel >= 5.12
+# or Qt6{Concurrent,Core,Core5Compat,DBus,Multimedia,Network,OpenGL,OpenGLWidgets,Svg,Widgets} >= 6 + Qt6QScintilla >= 2.8.0
 BuildRequires:	bison >= 2.4
-BuildRequires:	boost-devel >= 1.35
-BuildRequires:	cmake >= 3.3
+BuildRequires:	boost-devel >= 1.56
+BuildRequires:	cairo-devel >= 1.14
+BuildRequires:	cmake >= 3.13
 BuildRequires:	desktop-file-utils
 BuildRequires:	double-conversion-devel
-BuildRequires:	eigen3
+BuildRequires:	eigen3 >= 3
 BuildRequires:	flex >= 2.5.35
 BuildRequires:	fontconfig-devel >= 2.10
-BuildRequires:	freetype-devel >= 2.4
-BuildRequires:	gettext
+BuildRequires:	freetype-devel >= 1:2.4.9
+BuildRequires:	gettext-tools
+# or glad-devel with opencsg >= 1.6.0
 BuildRequires:	glew-devel >= 1.6
-BuildRequires:	glib2-devel
+BuildRequires:	glib2-devel >= 1:2.26
 BuildRequires:	gmp-devel >= 5.0.0
 BuildRequires:	harfbuzz-devel >= 0.9.19
+BuildRequires:	hidapi-devel >= 0.10
 BuildRequires:	lib3mf-devel >= 1.8.1
-BuildRequires:	libxml2-devel
+BuildRequires:	libspnav-devel
+# C++17
+BuildRequires:	libstdc++-devel >= 6:7
+BuildRequires:	libxml2-devel >= 1:2.9
 BuildRequires:	libzip-devel
 BuildRequires:	manifold-devel
 BuildRequires:	mimalloc-devel
@@ -56,19 +71,43 @@ BuildRequires:	opencsg-devel >= 1.3.2
 BuildRequires:	pkgconfig
 BuildRequires:	polyclipping-devel >= 6.1.3
 BuildRequires:	procps
-BuildRequires:	python3
+BuildRequires:	python3 >= 1:3.4
 BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
-BuildRequires:	qt5-build
+BuildRequires:	qt5-build >= 5.12
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.016
 BuildRequires:	sanitizers-cmake
 BuildRequires:	tbb-devel
+BuildRequires:	xorg-lib-libX11-devel
 %{?with_tests:BuildRequires:	xorg-xserver-Xvfb}
 # Library may have new symbols without soname change
 %requires_eq	tbb
+Requires:	Qt5Concurrent >= 5.12
+Requires:	Qt5Core >= 5.12
+Requires:	Qt5DBus >= 5
+Requires:	Qt5Gamepad >= 5
+Requires:	Qt5Multimedia >= 5.12
+Requires:	Qt5Network >= 5.12
+Requires:	Qt5OpenGL >= 5.12
+Requires:	Qt5Svg >= 5.12
+Requires:	Qt5Widgets >= 5.12
+Requires:	cairo >= 1.14
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
 Requires:	font(liberationserif)
+Requires:	fontconfig-libs >= 2.10
+Requires:	freetype >= 1:2.4.9
+Requires:	glew >= 1.6
+Requires:	glib2 >= 1:2.26
+Requires:	gmp >= 5.0.0
+Requires:	harfbuzz >= 0.9.19
+Requires:	hidapi >= 0.10
+Requires:	lib3mf >= 1.8.1
+Requires:	libxml2 >= 1:2.9
+Requires:	mpfr >= 3.0.0
+Requires:	opencsg >= 1.3.2
+Requires:	polyclipping >= 6.1.3
+Requires:	qscintilla2-qt5 >= 2.11.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 ### LICENSES:
@@ -180,22 +219,12 @@ zmian API, ale wiele rzeczy już działa.
 %{__rm} -r src/ext/polyclipping
 
 %build
-mkdir -p build
-cd build
-%cmake .. \
+%cmake -B build \
 	-DUSE_BUILTIN_MANIFOLD=OFF \
+	-DUSE_CCACHE=OFF \
 	%{cmake_on_off tests ENABLE_TESTS}
 
-%{__make}
-
-%if %{with tests}
-export OPENSCAD_BINARY=$(pwd)/openscad
-cd tests
-%cmake .
-%{__make}
-
-%{__make} -j1 test
-%endif
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
