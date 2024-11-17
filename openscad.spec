@@ -20,6 +20,10 @@ Group:		Applications/Engineering
 #Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
 Source0:	https://github.com/openscad/openscad/archive/%{hash}/%{name}-%{version}.tar.gz
 # Source0-md5:	0eebc48f5fc493d3f57896dec43e5ba1
+# see libraries/MCAD on github for submodule reference
+%define	mcad_gitref	1ea402208c3127ffb443931e9bb1681c191dacca
+Source1:	https://github.com/openscad/MCAD/archive/%{mcad_gitref}/MCAD-%{mcad_gitref}.tar.gz
+# Source1-md5:	a86572e744abff686ee146274eda87f4
 Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
 Patch2:		tests.patch
@@ -215,6 +219,8 @@ zmian API, ale wiele rzeczy już działa.
 %patch0 -p1
 %patch1 -p1
 
+%{__tar} xf %{SOURCE1} -C libraries/MCAD --strip-components=1
+
 # use system package
 %{__rm} -r src/ext/polyclipping
 
@@ -233,7 +239,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts
-
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/libraries/MCAD/{README.markdown,TODO,lgpl-2.1.txt}
 %{__mv} $RPM_BUILD_ROOT%{_datadir}/{%{name},}/locale
 
 %find_lang %{name}
@@ -256,3 +262,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/openscad.desktop
 %{_iconsdir}/hicolor/*x*/apps/openscad.png
 %{_mandir}/man1/openscad.1*
+
+%files MCAD
+%defattr(644,root,root,755)
+%doc libraries/MCAD/{README.markdown,TODO}
+%{_datadir}/%{name}/libraries/MCAD
