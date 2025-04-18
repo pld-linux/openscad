@@ -216,8 +216,8 @@ zmian API, ale wiele rzeczy już działa.
 
 %prep
 %setup -q -n openscad-fd3a9aad2bcd913ac1830e11670f0a422231e43f
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 %{__tar} xf %{SOURCE1} -C libraries/MCAD --strip-components=1
 
