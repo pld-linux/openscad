@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Program CAD do modelowania brył 3D
 Name:		openscad
 %define	hash	fd3a9aa
 Version:	2024.11.03
-Release:	6
+Release:	7
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
