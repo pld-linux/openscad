@@ -1,0 +1,20 @@
+--- openscad-1e5d8ca4bb937582781a99b65cc0b3b5bd047ec8/CMakeLists.txt.orig	2026-03-08 00:48:23.000000000 +0100
++++ openscad-1e5d8ca4bb937582781a99b65cc0b3b5bd047ec8/CMakeLists.txt	2026-03-14 15:49:13.689999355 +0100
+@@ -722,12 +722,12 @@
+ find_package(BISON REQUIRED QUIET)
+ message(STATUS "Bison: ${BISON_VERSION}")
+ 
+-find_package(Lib3MF)
+-if (Lib3MF_FOUND)
+-  message(STATUS "lib3mf: ${Lib3MF_VERSION}")
+-  target_link_libraries(OpenSCADLibInternal PUBLIC Lib3MF::Lib3MF)
++find_package(lib3mf)
++if (lib3mf_FOUND)
++  message(STATUS "lib3mf: ${lib3mf_VERSION}")
++  target_link_libraries(OpenSCADLibInternal PUBLIC lib3mf::lib3mf)
+   target_compile_definitions(OpenSCADLibInternal PUBLIC ENABLE_LIB3MF)
+-  if (Lib3MF_VERSION VERSION_GREATER_EQUAL 2)
++  if (lib3mf_VERSION VERSION_GREATER_EQUAL 2)
+     set(LIB3MF_SOURCES src/io/export_3mf_v2.cc src/io/import_3mf_v2.cc)
+   else()
+     set(LIB3MF_SOURCES src/io/export_3mf_v1.cc src/io/import_3mf_v1.cc)

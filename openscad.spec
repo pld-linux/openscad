@@ -25,6 +25,7 @@ Source0:	https://github.com/openscad/openscad/archive/%{hash}/%{name}-%{version}
 Source1:	https://github.com/openscad/MCAD/archive/%{mcad_gitref}/MCAD-%{mcad_gitref}.tar.gz
 # Source1-md5:	a86572e744abff686ee146274eda87f4
 Patch1:		localedir.patch
+Patch2:		lib3mf2.patch
 URL:		https://openscad.org/
 BuildRequires:	CGAL-devel >= 6.1.1
 BuildRequires:	Clipper2-devel
@@ -217,6 +218,7 @@ zmian API, ale wiele rzeczy już działa.
 %prep
 %setup -q -n openscad-1e5d8ca4bb937582781a99b65cc0b3b5bd047ec8
 %patch -P1 -p1
+%patch -P2 -p1
 
 %{__tar} xf %{SOURCE1} -C libraries/MCAD --strip-components=1
 
