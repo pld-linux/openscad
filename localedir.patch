@@ -1,10 +1,10 @@
---- openscad-2019.01-RC2/src/openscad.cc~	2019-01-28 20:47:07.000000000 +0100
+- >= 2.11.2-- openscad-2019.01-RC2/src/openscad.cc~	2019-01-28 20:47:07.000000000 +0100
 +++ openscad-2019.01-RC2/src/openscad.cc	2019-04-19 15:35:44.398250089 +0200
-@@ -144,17 +144,10 @@
-  * files.
+@@ -144,18 +144,10 @@
   */
- void localization_init() {
--  fs::path po_dir(PlatformUtils::resourcePath("locale"));
+ void localization_init()
+ {
+-  fs::path const po_dir(PlatformUtils::resourcePath("locale"));
 -  const std::string& locale_path(po_dir.string());
 -
 -  if (fs::is_directory(locale_path)) {
@@ -14,8 +14,9 @@
      bind_textdomain_codeset("openscad", "UTF-8");
      textdomain("openscad");
 -  } else {
--    LOG("Could not initialize localization (application path is '%1$s').", PlatformUtils::applicationPath());
+-    LOG("Could not initialize localization (application path is '%1$s').",
+-        PlatformUtils::applicationPath());
 -  }
  }
  
- Camera get_camera(const po::variables_map& vm)
+ #ifdef Q_OS_MACOS

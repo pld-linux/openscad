@@ -9,9 +9,9 @@
 Summary:	The Programmers Solid 3D CAD Modeller
 Summary(pl.UTF-8):	Program CAD do modelowania brył 3D
 Name:		openscad
-%define	hash	fd3a9aa
-Version:	2024.11.03
-Release:	8
+%define	hash	1e5d8ca
+Version:	2026.03.08
+Release:	1
 # COPYING contains a linking exception for CGAL
 # Appdata file is CC0
 # Examples are CC0
@@ -19,32 +19,32 @@ License:	GPL v2 with exceptions, CC0
 Group:		Applications/Engineering
 #Source0:	http://files.openscad.org/%{name}-%{version}.src.tar.gz
 Source0:	https://github.com/openscad/openscad/archive/%{hash}/%{name}-%{version}.tar.gz
-# Source0-md5:	0eebc48f5fc493d3f57896dec43e5ba1
+# Source0-md5:	475d58035886bf5dd745837b42e3e024
 # see libraries/MCAD on github for submodule reference
 %define	mcad_gitref	1ea402208c3127ffb443931e9bb1681c191dacca
 Source1:	https://github.com/openscad/MCAD/archive/%{mcad_gitref}/MCAD-%{mcad_gitref}.tar.gz
 # Source1-md5:	a86572e744abff686ee146274eda87f4
-Patch0:		%{name}-polyclipping.patch
 Patch1:		localedir.patch
-Patch2:		tests.patch
 URL:		https://openscad.org/
-BuildRequires:	CGAL-devel >= 5.0
+BuildRequires:	CGAL-devel >= 6.1.1
+BuildRequires:	Clipper2-devel
 BuildRequires:	EGL-devel
 %{?with_tests:BuildRequires:	ImageMagick}
 %{?with_tests:BuildRequires:	ImageMagick-coder-png}
 %{?with_tests:BuildRequires:	Mesa-dri-driver-swrast}
 BuildRequires:	OpenGL-GLX-devel
 BuildRequires:	OpenGL-devel
-BuildRequires:	Qt5Concurrent-devel >= 5.12
-BuildRequires:	Qt5Core-devel >= 5.12
-BuildRequires:	Qt5DBus-devel >= 5
-BuildRequires:	Qt5Gamepad-devel >= 5
-BuildRequires:	Qt5Multimedia-devel >= 5.12
-BuildRequires:	Qt5Network-devel >= 5.12
-BuildRequires:	Qt5OpenGL-devel >= 5.12
-BuildRequires:	Qt5Svg-devel >= 5.12
-BuildRequires:	Qt5Widgets-devel >= 5.12
-# or Qt6{Concurrent,Core,Core5Compat,DBus,Multimedia,Network,OpenGL,OpenGLWidgets,Svg,Widgets} >= 6 + Qt6QScintilla >= 2.8.0
+BuildRequires:	Qt6Concurrent-devel
+BuildRequires:	Qt6Core-devel
+BuildRequires:	Qt6DBus-devel
+BuildRequires:	Qt6Multimedia-devel
+BuildRequires:	Qt6Network-devel
+BuildRequires:	Qt6OpenGL-devel
+BuildRequires:	Qt6PrintSupport-devel
+BuildRequires:	Qt6Qt5Compat-devel
+BuildRequires:	Qt6Svg-devel
+BuildRequires:	Qt6Wayland-devel
+BuildRequires:	Qt6Widgets-devel
 BuildRequires:	bison >= 2.4
 BuildRequires:	boost-devel >= 1.56
 BuildRequires:	cairo-devel >= 1.14
@@ -68,16 +68,15 @@ BuildRequires:	libspnav-devel
 BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	libxml2-devel >= 1:2.9
 BuildRequires:	libzip-devel
-BuildRequires:	manifold-devel
+BuildRequires:	manifold-devel >= 3.4.0
 BuildRequires:	mimalloc-devel
 BuildRequires:	mpfr-devel >= 3.0.0
 BuildRequires:	opencsg-devel >= 1.3.2
 BuildRequires:	pkgconfig
-BuildRequires:	polyclipping-devel >= 6.1.3
 BuildRequires:	procps
 BuildRequires:	python3 >= 1:3.4
-BuildRequires:	qscintilla2-qt5-devel >= 2.11.2
-BuildRequires:	qt5-build >= 5.12
+BuildRequires:	qscintilla2-qt6-devel
+BuildRequires:	qt6-build
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.016
 BuildRequires:	sanitizers-cmake
@@ -86,15 +85,17 @@ BuildRequires:	xorg-lib-libX11-devel
 %{?with_tests:BuildRequires:	xorg-xserver-Xvfb}
 # Library may have new symbols without soname change
 %requires_eq	tbb
-Requires:	Qt5Concurrent >= 5.12
-Requires:	Qt5Core >= 5.12
-Requires:	Qt5DBus >= 5
-Requires:	Qt5Gamepad >= 5
-Requires:	Qt5Multimedia >= 5.12
-Requires:	Qt5Network >= 5.12
-Requires:	Qt5OpenGL >= 5.12
-Requires:	Qt5Svg >= 5.12
-Requires:	Qt5Widgets >= 5.12
+Requires:	Qt6Concurrent
+Requires:	Qt6Core
+Requires:	Qt6DBus
+Requires:	Qt6Multimedia
+Requires:	Qt6Network
+Requires:	Qt6OpenGL
+Requires:	Qt6PrintSupport
+Requires:	Qt6Qt5Compat
+Requires:	Qt6Svg
+Requires:	Qt6Wayland
+Requires:	Qt6Widgets
 Requires:	cairo >= 1.14
 Requires:	font(liberationmono)
 Requires:	font(liberationsans)
@@ -110,8 +111,7 @@ Requires:	lib3mf >= 1.8.1
 Requires:	libxml2 >= 1:2.9
 Requires:	mpfr >= 3.0.0
 Requires:	opencsg >= 1.3.2
-Requires:	polyclipping >= 6.1.3
-Requires:	qscintilla2-qt5 >= 2.11.2
+Requires:	qscintilla2-qt6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 ### LICENSES:
@@ -215,18 +215,15 @@ mechanicznych. Obecnie nie jest skończona i można spodziewać się
 zmian API, ale wiele rzeczy już działa.
 
 %prep
-%setup -q -n openscad-fd3a9aad2bcd913ac1830e11670f0a422231e43f
-%patch -P0 -p1
+%setup -q -n openscad-1e5d8ca4bb937582781a99b65cc0b3b5bd047ec8
 %patch -P1 -p1
 
 %{__tar} xf %{SOURCE1} -C libraries/MCAD --strip-components=1
 
-# use system package
-%{__rm} -r src/ext/polyclipping
-
 %build
 %cmake -B build \
 	-DUSE_BUILTIN_MANIFOLD=OFF \
+	-DUSE_BUILTIN_CLIPPER2=OFF \
 	-DUSE_CCACHE=OFF \
 	%{cmake_on_off tests ENABLE_TESTS}
 
